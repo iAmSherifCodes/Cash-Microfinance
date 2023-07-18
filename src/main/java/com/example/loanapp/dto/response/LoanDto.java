@@ -1,7 +1,6 @@
 package com.example.loanapp.dto.response;
 
 import com.example.loanapp.data.Enums.LoanStatus;
-import com.example.loanapp.data.Enums.LoanType;
 import com.example.loanapp.data.model.LoanOfficer;
 import lombok.Data;
 
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 public class LoanDto {
     private BigDecimal loanAmount;
-    private LoanType loanType;
     private Integer tenureInMonths;
     private LoanStatus loanApplicationStatus;
     private LocalDateTime dateTime;

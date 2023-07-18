@@ -11,6 +11,8 @@ import com.example.loanapp.dto.response.LoanApplicationResponse;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
 import com.example.loanapp.dto.response.RegistrationResponse;
 
+import java.time.LocalDate;
+
 public class Mapper {
 
     public static Customer map(RegistrationRequest registrationRequest){
@@ -22,6 +24,7 @@ public class Mapper {
         newUser.setEmploymentStatus(registrationRequest.getEmploymentStatus());
         newUser.setPhoneNumber(registrationRequest.getPhoneNumber());
         newUser.setSex(registrationRequest.getSex());
+        newUser.setAge(registrationRequest.getAge());
         newUser.setBasicMonthSalary(registrationRequest.getBasicMonthSalary());
         newUser.setEmploymentClassification(registrationRequest.getEmploymentClassification());
         newUser.setNameOfCurrentEmployer(registrationRequest.getNameOfCurrentEmployer());
@@ -47,10 +50,13 @@ public class Mapper {
 
     public static Loan map(LoanApplicationRequest loanApplicationRequest){
         Loan newLoan = new Loan();
+        newLoan.setAmountPerPaymentPeriod(loanApplicationRequest.getAmountPerPaymentPeriod());
         newLoan.setLoanAmount(loanApplicationRequest.getLoanAmount());
-        newLoan.setLoanType(loanApplicationRequest.getLoanType());
         newLoan.setLoanPurpose(loanApplicationRequest.getLoanPurpose());
-        newLoan.setTenureInMonths(loanApplicationRequest.getTenureInWeeks());
+        newLoan.setRepaymentPreference(loanApplicationRequest.getRepaymentPreference());
+        newLoan.setTenureInMonths(loanApplicationRequest.getTenureInMonths());
+//        newLoan.setLoanEndDate(LocalDate.ofEpochDay(newLoan.getLoanStartDate().getYear() + loanApplicationRequest.getTenureInMonths()));
+//        LocalDate.ofEpochDay(startDate.getYear() + Integer.parseInt(loanTenure))
         return newLoan;
     }
 
@@ -58,8 +64,9 @@ public class Mapper {
         LoanApplicationResponse response = new LoanApplicationResponse();
         response.setLoanAmount(savedLoan.getLoanAmount());
         response.setLoanPurpose(savedLoan.getLoanPurpose());
-        response.setLoanType(savedLoan.getLoanType());
+        response.setRepaymentPreference(savedLoan.getRepaymentPreference());
         response.setTenureInMonths(savedLoan.getTenureInMonths());
+        response.setMessage("Application has been sent for review.");
 
         return response;
     }

@@ -3,6 +3,6 @@ package com.example.loanapp.dto.request;
 import lombok.Data;
 
 @Data
-public class ApplicationStatusRequest {
+public class LoanAgreementRequest {
     private String email;
 }

@@ -52,7 +52,7 @@ public class LoanAppOfficerService implements LoanOfficerService{
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
         loanDto.setLoanAmount(loan.getLoanAmount());
-        loanDto.setLoanType(loan.getLoanType());
+//        loanDto.setLoanType(loan.getLoanType());
         loanDto.setTenureInMonths(loan.getTenureInMonths());
         loanDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
         loanDto.setLoanOfficer(loan.getLoanOfficer());
@@ -82,8 +82,8 @@ public class LoanAppOfficerService implements LoanOfficerService{
         viewLoanApplicationsDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
         viewLoanApplicationsDto.setLoanOfficer(loan.getLoanOfficer());
         viewLoanApplicationsDto.setId(loan.getId());
-        viewLoanApplicationsDto.setLoanType(loan.getLoanType());
-        viewLoanApplicationsDto.setDateTime(loan.getDateTime());
+//        viewLoanApplicationsDto.setLoanType(loan.getLoanType());
+//        viewLoanApplicationsDto.setDateTime(loan.getLoanStartDate());
         viewLoanApplicationsDto.setTenureInMonths(loan.getTenureInMonths());
 
         return viewLoanApplicationsDto;

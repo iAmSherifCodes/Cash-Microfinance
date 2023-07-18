@@ -1,10 +1,7 @@
 package com.example.loanapp.controller;
 
 import com.example.loanapp.data.model.Customer;
-import com.example.loanapp.dto.request.LoanApplicationRequest;
-import com.example.loanapp.dto.request.LoginRequest;
-import com.example.loanapp.dto.request.OfficerLoginRequest;
-import com.example.loanapp.dto.request.RegistrationRequest;
+import com.example.loanapp.dto.request.*;
 import com.example.loanapp.dto.response.*;
 import com.example.loanapp.service.CustomerService;
 import com.example.loanapp.service.LoanAppOfficerService;
@@ -40,6 +37,16 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest request){
         return new ResponseEntity<>(customerService.login(request), HttpStatus.OK);
+    }
+
+    @GetMapping("/view-loan-status")
+    public ResponseEntity<ApplicationStatusResponse> viewLoanStatus(@RequestBody ApplicationStatusRequest applicationStatusRequest){
+        return new ResponseEntity<>(customerService.viewLoanApplicationStatus(applicationStatusRequest), HttpStatus.OK);
+    }
+
+    @GetMapping("/view-loan-agreement")
+    public ResponseEntity<LoanAgreementResponse> loanAgreement(@RequestBody LoanAgreementRequest loanAgreementRequest){
+        return new ResponseEntity<>(customerService.viewLoanAgreement(loanAgreementRequest), HttpStatus.OK);
     }
 
 

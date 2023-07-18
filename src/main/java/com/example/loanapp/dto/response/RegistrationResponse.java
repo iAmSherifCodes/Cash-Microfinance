@@ -15,11 +15,8 @@ public class RegistrationResponse {
     private String address;
     private String phoneNumber;
     private String email;
-    @Enumerated
     private Sex sex;
-    @Enumerated
     private EmploymentStatus employmentStatus;
-    @Enumerated
     private EmploymentClassification employmentClassification;
     private String nameOfCurrentEmployer;
     private BigDecimal basicMonthSalary;

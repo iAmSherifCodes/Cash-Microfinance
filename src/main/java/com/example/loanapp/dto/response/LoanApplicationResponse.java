@@ -1,7 +1,6 @@
 package com.example.loanapp.dto.response;
 
-import com.example.loanapp.data.Enums.LoanType;
-import jakarta.persistence.Enumerated;
+import com.example.loanapp.data.Enums.RepaymentPreferences;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,7 +9,7 @@ import java.math.BigDecimal;
 public class LoanApplicationResponse {
     private BigDecimal loanAmount;
     private String loanPurpose;
-    @Enumerated
-    private LoanType loanType;
     private int tenureInMonths;
+    private String message;
+    private RepaymentPreferences repaymentPreference;
 }
