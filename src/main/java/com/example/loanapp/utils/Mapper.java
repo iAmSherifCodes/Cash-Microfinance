@@ -34,17 +34,9 @@ public class Mapper {
 
     public static RegistrationResponse map(Customer savedUser){
         RegistrationResponse response = new RegistrationResponse();
-        response.setAddress(savedUser.getAddress());
-        response.setEmail(savedUser.getEmail());
-        response.setFirstName(savedUser.getFirstName());
-        response.setLastName(savedUser.getLastName());
-        response.setEmploymentStatus(savedUser.getEmploymentStatus());
-        response.setPhoneNumber(savedUser.getPhoneNumber());
-        response.setSex(savedUser.getSex());
-        response.setBasicMonthSalary(savedUser.getBasicMonthSalary());
-        response.setEmploymentClassification(savedUser.getEmploymentClassification());
-        response.setNameOfCurrentEmployer(savedUser.getNameOfCurrentEmployer());
-        response.setMessage("Registration Successful");
+
+        if (savedUser!=null)response.setMessage("Registration Successful");
+
         return response;
     }
 

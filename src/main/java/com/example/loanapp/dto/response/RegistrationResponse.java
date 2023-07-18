@@ -10,15 +10,5 @@ import java.math.BigDecimal;
 
 @Data
 public class RegistrationResponse {
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String phoneNumber;
-    private String email;
-    private Sex sex;
-    private EmploymentStatus employmentStatus;
-    private EmploymentClassification employmentClassification;
-    private String nameOfCurrentEmployer;
-    private BigDecimal basicMonthSalary;
     private String message;
 }

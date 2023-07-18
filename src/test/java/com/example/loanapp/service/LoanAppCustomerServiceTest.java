@@ -1,17 +1,14 @@
 package com.example.loanapp.service;
 
-import com.example.loanapp.data.model.Loan;
 import com.example.loanapp.data.repositories.CustomerRepository;
 import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.dto.request.*;
 import com.example.loanapp.dto.response.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static com.example.loanapp.data.Enums.EmploymentClassification.SENIOR_STAFF;
 import static com.example.loanapp.data.Enums.EmploymentStatus.FULL_EMPLOYMENT;
@@ -35,25 +32,18 @@ class LoanAppCustomerServiceTest {
 
 
 
-    @AfterEach
-    void deleteDataCreated(){
-        Optional<Loan> lastLoan = this.loanRepository.findAll()
-                .stream()
-                .filter((loan)->loan.getId() == loanRepository.count()-1)
-                .findAny();
-        lastLoan.ifPresent((loanRepository::delete));
-    }
+//    @AfterEach
+//    void deleteDataCreated(){
+//        Optional<Loan> lastLoan = this.loanRepository.findAll()
+//                .stream()
+//                .filter((loan)->loan.getId() == loanRepository.count()-1)
+//                .findAny();
+//        lastLoan.ifPresent((loanRepository::delete));
+//    }
 
 
     @Test
     public void register() {
-//        LoanApplicationRequest request = new LoanApplicationRequest();
-//        request.setLoanAmount(BigDecimal.valueOf(909090));
-//        request.setLoanPurpose("House Rent");
-//        request.setTenureInWeeks(34);
-//
-//        this.customerService.applyForLoan(request);
-
         RegistrationRequest user = new RegistrationRequest();
         user.setAddress("5A Liverpool, UK"); //4
         user.setEmail("gbolahunBams23@gmail.com"); //6
@@ -68,15 +58,10 @@ class LoanAppCustomerServiceTest {
         user.setNameOfCurrentEmployer("Liverpool FC. Security Dept."); //11
         user.setBasicMonthSalary(BigDecimal.valueOf(500000000)); //12
 
-//        Loan foundLoan = loanRepository.findAll().get(0);
 
 
         RegistrationResponse response =  customerService.register(user);
 
-//        Customer foundCustomer = customerRepository.findAll().get(0);
-//        foundCustomer.setLoan(foundLoan);
-
-//        customerRepository.save(foundCustomer);
 
 
 
