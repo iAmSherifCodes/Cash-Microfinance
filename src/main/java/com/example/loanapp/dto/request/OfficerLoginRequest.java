@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class OfficerLoginRequest {
     private String fullName;
-    private String password;
+//    private String password;
 }

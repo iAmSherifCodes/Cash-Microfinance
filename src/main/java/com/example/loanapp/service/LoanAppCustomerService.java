@@ -52,7 +52,7 @@ public class LoanAppCustomerService implements CustomerService {
 
     private static boolean isUserFound(LoginRequest loginRequest, Customer customer) {
         return customer.getPassword().equals(loginRequest.getPassword())
-                && customer.getPhoneNumber().equals(loginRequest.getPhoneNumber());
+                && customer.getEmail().equals(loginRequest.getEmail());
     }
 
     private boolean findCustomerByEmail(Customer customer, String email){
@@ -109,8 +109,6 @@ public class LoanAppCustomerService implements CustomerService {
             loanAgreementResponse.setPhoneNumber(foundCustomer.get().getPhoneNumber());
             loanAgreementResponse.setAddress(foundCustomer.get().getAddress());
             loanAgreementResponse.setLoanAmount(foundCustomer.get().getLoan().getLoanAmount());
-//            loanAgreementResponse.setStartDate(foundCustomer.get().getLoan().getLoanStartDate());
-//            loanAgreementResponse.setEndDate(foundCustomer.get().getLoan().getLoanEndDate());
             loanAgreementResponse.setRepaymentPreference(String.valueOf(foundCustomer.get().getLoan().getRepaymentPreference()));
             loanAgreementResponse.setLoanTenure(String.valueOf(foundCustomer.get().getLoan().getTenureInMonths()));
             loanAgreementResponse.setAmountPerPaymentPeriod(foundCustomer.get().getLoan().getAmountPerPaymentPeriod());

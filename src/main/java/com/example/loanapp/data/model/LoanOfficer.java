@@ -14,5 +14,5 @@ public class LoanOfficer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
-    private String password;
+//    private String password;
 }

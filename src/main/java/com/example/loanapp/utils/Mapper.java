@@ -67,14 +67,13 @@ public class Mapper {
         LoanOfficer loanOfficer = new LoanOfficer();
 
         loanOfficer.setFullName(officerLoginRequest.getFullName());
-        loanOfficer.setPassword(officerLoginRequest.getPassword());
         return loanOfficer;
     }
 
     public static OfficerLoginResponse map(LoanOfficer loanOfficer){
         OfficerLoginResponse response = new OfficerLoginResponse();
         response.setFullName(loanOfficer.getFullName());
-        response.setMessage("Login Successful");
+        response.setMessage("Login Successful \n Welcome " + response.getFullName());
 
         return response;
     }

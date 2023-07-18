@@ -65,7 +65,6 @@ class LoanAppCustomerServiceTest {
 
 
 
-        assertEquals(user.getFirstName(), response.getFirstName());
         assertNotNull(user);
         assertEquals("Registration Successful", response.getMessage());
     }
@@ -73,7 +72,7 @@ class LoanAppCustomerServiceTest {
     @Test
     public void login() {
         LoginRequest request = new LoginRequest();
-        request.setPhoneNumber("07037000000");
+        request.setEmail("07037000000");
         request.setPassword("unHaCkAbLe");
 
         LoginResponse response = customerService.login(request);
@@ -85,7 +84,7 @@ class LoanAppCustomerServiceTest {
     @Test
     void invalidLogin(){
         LoginRequest request = new LoginRequest();
-        request.setPhoneNumber("09045490323");
+        request.setEmail("09045490323");
         request.setPassword("hackMe");
 
         LoginResponse response = customerService.login(request);

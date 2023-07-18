@@ -7,6 +7,7 @@ import com.example.loanapp.data.repositories.CustomerRepository;
 import com.example.loanapp.data.repositories.LoanOfficerRepository;
 import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.dto.request.OfficerLoginRequest;
+import com.example.loanapp.dto.request.UpdateLoanStatusRequest;
 import com.example.loanapp.dto.response.LoanDto;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
 import com.example.loanapp.dto.response.ViewLoanApplicationsDto;
@@ -52,7 +53,6 @@ public class LoanAppOfficerService implements LoanOfficerService{
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
         loanDto.setLoanAmount(loan.getLoanAmount());
-//        loanDto.setLoanType(loan.getLoanType());
         loanDto.setTenureInMonths(loan.getTenureInMonths());
         loanDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
         loanDto.setLoanOfficer(loan.getLoanOfficer());
@@ -72,7 +72,22 @@ public class LoanAppOfficerService implements LoanOfficerService{
         return this.customerRepository.findAll();
     }
 
+    @Override
+    public void updateLoanStatus(UpdateLoanStatusRequest request) {
+        Optional<Customer> foundCustomer = getCustomerByEmail(request.getUserEmail());
 
+    }
+
+    private Optional<Customer> getCustomerByEmail(String email) {
+        return customerRepository.findAll()
+                .stream()
+                .filter(customer -> findCustomerByEmail(customer, email))
+                .findAny();
+    }
+
+    private boolean findCustomerByEmail(Customer customer, String email){
+        return customer.getEmail().equals(email);
+    }
 
 
     private ViewLoanApplicationsDto viewLoanApplicationsDto(Loan loan){
