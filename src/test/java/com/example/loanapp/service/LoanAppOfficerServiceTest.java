@@ -1,6 +1,7 @@
 package com.example.loanapp.service;
 
 import com.example.loanapp.dto.request.OfficerLoginRequest;
+import com.example.loanapp.dto.response.LoanDto;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,17 +53,16 @@ class LoanAppOfficerServiceTest {
     }
 
     @Test
-    void getLoanById(){
-
-    }
-
-    @Test
     void getNumberOfCustomers(){
         assertEquals(5, this.loanOfficerService.customers().size());
     }
 
     @Test
     void reviewLoanApplication() {
+        LoanDto loanDto = this.loanOfficerService.reviewLoanApplication(3L);
+        assertNotNull(loanDto);
+        assertNotNull(loanDto.getCustomerAddress());
+        assertNotNull(loanDto.getCustomerLoanAmount());
     }
 
     @Test

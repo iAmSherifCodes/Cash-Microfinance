@@ -33,7 +33,7 @@ public class Customer {
     private EmploymentClassification employmentClassification;
     private String nameOfCurrentEmployer;
     private BigDecimal basicMonthSalary;
-//    @JoinColumn(name = "CustomerLoan")
+    @JoinColumn(name = "CustomerLoan")
     @OneToOne
     private Loan loan;
 }

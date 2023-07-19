@@ -42,22 +42,17 @@ public class LoanAppOfficerService implements LoanOfficerService{
 
     @Override
     public LoanDto reviewLoanApplication(Long loanApplicationId) {
-        Optional<LoanDto> foundLoan = this.loanRepository.findById(loanApplicationId)
-                .stream()
-                .map(this::loanDto)
-                .findAny();
-        return foundLoan.orElseThrow(()-> new LoanNotFound("Loan Not Found"));
-    }
-
-    private LoanDto loanDto(Loan loan) {
+        Optional<Customer> foundCustomer;
+        Optional<Loan> foundLoan = this.loanRepository.findById(loanApplicationId);
         LoanDto loanDto = new LoanDto();
-        loanDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
-        loanDto.setLoanAmount(loan.getLoanAmount());
-        loanDto.setTenureInMonths(loan.getTenureInMonths());
-        loanDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
-        loanDto.setLoanOfficer(loan.getLoanOfficer());
-
+        if (foundLoan.isPresent()){
+            foundCustomer = this.customerRepository.findByLoan(foundLoan.get());
+            if (foundCustomer.isPresent()){
+                Mapper.loanDtoMapper(foundCustomer, foundLoan, loanDto);
+            }
+        } else throw new LoanNotFound("Loan Not Found");
         return loanDto;
+
     }
 
     @Override
@@ -75,6 +70,12 @@ public class LoanAppOfficerService implements LoanOfficerService{
     @Override
     public void updateLoanStatus(UpdateLoanStatusRequest request) {
         Optional<Customer> foundCustomer = getCustomerByEmail(request.getUserEmail());
+        foundCustomer.ifPresent(customer -> {
+            customer.getLoan().setLoanApplicationStatus(request.getLoanStatus());
+            Optional<Loan> foundLoan = this.loanRepository.findAll().stream().filter(loan -> loan.equals(customer.getLoan())).findAny();
+            foundLoan.ifPresent(this.loanRepository::save);
+            this.customerRepository.save(customer);
+        });
 
     }
 
@@ -97,8 +98,6 @@ public class LoanAppOfficerService implements LoanOfficerService{
         viewLoanApplicationsDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
         viewLoanApplicationsDto.setLoanOfficer(loan.getLoanOfficer());
         viewLoanApplicationsDto.setId(loan.getId());
-//        viewLoanApplicationsDto.setLoanType(loan.getLoanType());
-//        viewLoanApplicationsDto.setDateTime(loan.getLoanStartDate());
         viewLoanApplicationsDto.setTenureInMonths(loan.getTenureInMonths());
 
         return viewLoanApplicationsDto;

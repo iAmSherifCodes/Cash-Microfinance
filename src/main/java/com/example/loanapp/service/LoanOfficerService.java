@@ -15,9 +15,7 @@ public interface LoanOfficerService {
     LoanDto reviewLoanApplication(Long loanApplicationId);
     List<ViewLoanApplicationsDto> viewLoanApplications();
     List<Customer> customers();
-
     void updateLoanStatus(UpdateLoanStatusRequest request);
-//    GetLoanByIdRequest getLoanById()
 
 
 
