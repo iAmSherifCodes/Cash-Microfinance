@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateLoanStatusRequest {
+    private String officerName;
     private String userEmail;
     private LoanStatus loanStatus;
 }
