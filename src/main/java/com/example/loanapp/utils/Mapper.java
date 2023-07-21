@@ -41,13 +41,12 @@ public class Mapper {
 
     public static Loan map(LoanApplicationRequest loanApplicationRequest){
         Loan newLoan = new Loan();
+        newLoan.setLoanStartDate(LocalDate.now());
         newLoan.setAmountPerPaymentPeriod(loanApplicationRequest.getAmountPerPaymentPeriod());
         newLoan.setLoanAmount(loanApplicationRequest.getLoanAmount());
         newLoan.setLoanPurpose(loanApplicationRequest.getLoanPurpose());
         newLoan.setRepaymentPreference(loanApplicationRequest.getRepaymentPreference());
         newLoan.setTenureInMonths(loanApplicationRequest.getTenureInMonths());
-//        newLoan.setLoanEndDate(LocalDate.ofEpochDay(newLoan.getLoanStartDate().getYear() + loanApplicationRequest.getTenureInMonths()));
-//        LocalDate.ofEpochDay(startDate.getYear() + Integer.parseInt(loanTenure))
         return newLoan;
     }
 
@@ -77,38 +76,30 @@ public class Mapper {
         return response;
     }
 
-    public static void loanDtoMapper(Optional<Customer> foundCustomer, Optional<Loan> foundLoan, LoanDto loanDto) {
+    public static void loanDtoMapper(Optional<Customer> foundCustomer, Optional<Loan> foundLoan, ReviewLoanResponse reviewLoanResponse) {
         if (foundCustomer.isPresent() && foundLoan.isPresent()){
-        loanDto.setCustomerFirstName(foundCustomer.get().getFirstName());
-        loanDto.setCustomerLastName(foundCustomer.get().getLastName());
-        loanDto.setCustomerAddress(foundCustomer.get().getAddress());
-        loanDto.setCustomerPhoneNumber(foundCustomer.get().getPhoneNumber());
-        loanDto.setCustomerEmail(foundCustomer.get().getEmail());
-        loanDto.setCustomerSex(foundCustomer.get().getSex());
-        loanDto.setCustomerAge(foundCustomer.get().getAge());
-        loanDto.setCustomerEmploymentStatus(foundCustomer.get().getEmploymentStatus());
-        loanDto.setCustomerEmploymentClassification(foundCustomer.get().getEmploymentClassification());
-        loanDto.setCustomerNameOfCurrentEmployer(foundCustomer.get().getNameOfCurrentEmployer());
-        loanDto.setCustomerBasicMonthSalary(foundCustomer.get().getBasicMonthSalary());
+        reviewLoanResponse.setCustomerFirstName(foundCustomer.get().getFirstName());
+        reviewLoanResponse.setCustomerLastName(foundCustomer.get().getLastName());
+        reviewLoanResponse.setCustomerAddress(foundCustomer.get().getAddress());
+        reviewLoanResponse.setCustomerPhoneNumber(foundCustomer.get().getPhoneNumber());
+        reviewLoanResponse.setCustomerEmail(foundCustomer.get().getEmail());
+        reviewLoanResponse.setCustomerSex(foundCustomer.get().getSex());
+        reviewLoanResponse.setCustomerAge(foundCustomer.get().getAge());
+        reviewLoanResponse.setCustomerEmploymentStatus(foundCustomer.get().getEmploymentStatus());
+        reviewLoanResponse.setCustomerEmploymentClassification(foundCustomer.get().getEmploymentClassification());
+        reviewLoanResponse.setCustomerNameOfCurrentEmployer(foundCustomer.get().getNameOfCurrentEmployer());
+        reviewLoanResponse.setCustomerBasicMonthSalary(foundCustomer.get().getBasicMonthSalary());
 
-        loanDto.setLoanApplicationStatus(foundLoan.get().getLoanApplicationStatus());
-        loanDto.setCustomerLoanAmount(foundLoan.get().getLoanAmount());
-        loanDto.setCustomerTenureInMonths(foundLoan.get().getTenureInMonths());
-        loanDto.setLoanApplicationStatus(foundLoan.get().getLoanApplicationStatus());
-        loanDto.setLoanOfficer(foundLoan.get().getLoanOfficer());
+        reviewLoanResponse.setLoanApplicationStatus(foundLoan.get().getLoanApplicationStatus());
+        reviewLoanResponse.setCustomerLoanAmount(foundLoan.get().getLoanAmount());
+        reviewLoanResponse.setCustomerTenureInMonths(foundLoan.get().getTenureInMonths());
+        reviewLoanResponse.setLoanApplicationStatus(foundLoan.get().getLoanApplicationStatus());
+        reviewLoanResponse.setLoanOfficer(foundLoan.get().getLoanOfficer());
         }
     }
 
-//    public static ViewLoanApplicationsDto viewLoanApplicationsDto(Loan loan){
-//        ViewLoanApplicationsDto viewLoanApplicationsDto = new ViewLoanApplicationsDto();
-//        viewLoanApplicationsDto.setLoanAmount(loan.getLoanAmount());
-//        viewLoanApplicationsDto.setLoanPurpose(loan.getLoanPurpose());
-//        viewLoanApplicationsDto.setLoanApplicationStatus(loan.getLoanApplicationStatus());
-//        viewLoanApplicationsDto.setLoanOfficer(loan.getLoanOfficer());
-//        viewLoanApplicationsDto.setId(loan.getId());
-//        viewLoanApplicationsDto.setTenureInMonths(loan.getTenureInMonths());
-//
-//        return viewLoanApplicationsDto;
-//    }
+
+
+
 
 }

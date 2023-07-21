@@ -1,15 +1,20 @@
 package com.example.loanapp.service;
 
+import com.example.loanapp.data.Enums.LoanStatus;
 import com.example.loanapp.dto.request.OfficerLoginRequest;
-import com.example.loanapp.dto.response.LoanDto;
+import com.example.loanapp.dto.request.ReviewLoanRequest;
+import com.example.loanapp.dto.request.UpdateLoanStatusRequest;
+import com.example.loanapp.dto.response.ReviewLoanResponse;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
+import com.example.loanapp.dto.response.UpdateLoanStatusResponse;
+
+import com.example.loanapp.exceptions.InvalidOfficer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class LoanAppOfficerServiceTest {
@@ -59,10 +64,10 @@ class LoanAppOfficerServiceTest {
 
     @Test
     void reviewLoanApplication() {
-        LoanDto loanDto = this.loanOfficerService.reviewLoanApplication(3L);
-        assertNotNull(loanDto);
-        assertNotNull(loanDto.getCustomerAddress());
-        assertNotNull(loanDto.getCustomerLoanAmount());
+        ReviewLoanResponse reviewLoanResponse = this.loanOfficerService.reviewLoanApplication(new ReviewLoanRequest("gbolahunBams23@gmail.com"));
+        assertNotNull(reviewLoanResponse);
+        assertNotNull(reviewLoanResponse.getCustomerAddress());
+        assertNotNull(reviewLoanResponse.getCustomerLoanAmount());
     }
 
     @Test
@@ -71,6 +76,23 @@ class LoanAppOfficerServiceTest {
     }
 
     @Test
-    void viewLoanApplicationsDto() {
+    void updateLoanApplicationsStatus() {
+        LoanStatus status = LoanStatus.CLOSED;
+        Long loanId = 1L;
+        Long officerId = 1L;
+
+        UpdateLoanStatusResponse response = this.loanOfficerService.updateLoanStatus(new UpdateLoanStatusRequest(officerId, loanId, status));
+        assertNotNull(response);
+        assertEquals("Successful", response.getMessage());
+    }
+
+    @Test
+    void updateLoanApplicationsStatusIsInvalid() {
+        LoanStatus status = LoanStatus.IN_PROGRESS;
+        Long loanId = 4L;
+        Long officerId = 4L;
+
+        assertThrows(InvalidOfficer.class, ()->this.loanOfficerService.updateLoanStatus(new UpdateLoanStatusRequest(officerId, loanId, status)));
+
     }
 }

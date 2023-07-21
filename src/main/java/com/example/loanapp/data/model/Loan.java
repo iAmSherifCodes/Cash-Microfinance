@@ -24,7 +24,7 @@ public class Loan {
     private RepaymentPreferences repaymentPreference;
     @Enumerated(EnumType.STRING)
     private LoanStatus loanApplicationStatus = LoanStatus.IN_PROGRESS;
-//    private LocalDate loanStartDate = LocalDate.now();
+    private LocalDate loanStartDate = LocalDate.now();
 //    private LocalDate loanEndDate;
     private BigDecimal amountPerPaymentPeriod;
     @OneToOne

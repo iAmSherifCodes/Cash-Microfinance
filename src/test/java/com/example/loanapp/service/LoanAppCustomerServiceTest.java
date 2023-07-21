@@ -10,9 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
-import static com.example.loanapp.data.Enums.EmploymentClassification.SENIOR_STAFF;
+import static com.example.loanapp.data.Enums.EmploymentClassification.*;
+import static com.example.loanapp.data.Enums.EmploymentStatus.CONTRACT;
 import static com.example.loanapp.data.Enums.EmploymentStatus.FULL_EMPLOYMENT;
 import static com.example.loanapp.data.Enums.RepaymentPreferences.PAYPAL;
+import static com.example.loanapp.data.Enums.Sex.FEMALE;
 import static com.example.loanapp.data.Enums.Sex.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,6 +59,60 @@ class LoanAppCustomerServiceTest {
         user.setEmploymentStatus(FULL_EMPLOYMENT); //9
         user.setNameOfCurrentEmployer("Liverpool FC. Security Dept."); //11
         user.setBasicMonthSalary(BigDecimal.valueOf(500000000)); //12
+
+
+
+        RegistrationResponse response =  customerService.register(user);
+
+
+
+
+        assertNotNull(user);
+        assertEquals("Registration Successful", response.getMessage());
+    }
+
+    @Test
+    public void registerSecondCustomer() {
+        RegistrationRequest user = new RegistrationRequest();
+        user.setAddress("No 4, Adewale street, Lekki Gardens"); //4
+        user.setEmail("adewales23@gmail.com"); //6
+        user.setFirstName("Adewale"); //1
+        user.setLastName("Bobo"); //2
+        user.setSex(MALE); //7
+        user.setAge(32); //8
+        user.setPhoneNumber("09099000000"); //5
+        user.setPassword("pass1");//3
+        user.setEmploymentClassification(JUNIOR_STAFF); //10
+        user.setEmploymentStatus(FULL_EMPLOYMENT); //9
+        user.setNameOfCurrentEmployer("New Jersey"); //11
+        user.setBasicMonthSalary(BigDecimal.valueOf(4500000)); //12
+
+
+
+        RegistrationResponse response =  customerService.register(user);
+
+
+
+
+        assertNotNull(user);
+        assertEquals("Registration Successful", response.getMessage());
+    }
+
+    @Test
+    public void registerThirdCustomer() {
+        RegistrationRequest user = new RegistrationRequest();
+        user.setAddress("34, Herbert"); //4
+        user.setEmail("jamesAyo23@gmail.com"); //6
+        user.setFirstName("James"); //1
+        user.setLastName("Ayomide"); //2
+        user.setSex(FEMALE); //7
+        user.setAge(23); //8
+        user.setPhoneNumber("0901000000"); //5
+        user.setPassword("pass2");//3
+        user.setEmploymentClassification(JUNIOR_MANAGEMENT); //10
+        user.setEmploymentStatus(CONTRACT); //9
+        user.setNameOfCurrentEmployer("Arsenal FC."); //11
+        user.setBasicMonthSalary(BigDecimal.valueOf(430000)); //12
 
 
 

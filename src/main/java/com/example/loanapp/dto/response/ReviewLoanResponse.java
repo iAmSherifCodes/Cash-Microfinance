@@ -5,15 +5,13 @@ import com.example.loanapp.data.Enums.EmploymentStatus;
 import com.example.loanapp.data.Enums.LoanStatus;
 import com.example.loanapp.data.Enums.Sex;
 import com.example.loanapp.data.model.LoanOfficer;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class LoanDto {
+public class ReviewLoanResponse {
     private String customerFirstName;
     private String customerLastName;
     private String customerAddress;

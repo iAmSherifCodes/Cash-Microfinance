@@ -1,5 +1,6 @@
 package com.example.loanapp.service;
 
+import com.example.loanapp.data.Enums.LoanStatus;
 import com.example.loanapp.data.model.Customer;
 import com.example.loanapp.data.model.Loan;
 import com.example.loanapp.data.model.LoanOfficer;
@@ -7,19 +8,25 @@ import com.example.loanapp.data.repositories.CustomerRepository;
 import com.example.loanapp.data.repositories.LoanOfficerRepository;
 import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.dto.request.OfficerLoginRequest;
+import com.example.loanapp.dto.request.ReviewLoanRequest;
 import com.example.loanapp.dto.request.UpdateLoanStatusRequest;
-import com.example.loanapp.dto.response.LoanDto;
+import com.example.loanapp.dto.response.ReviewLoanResponse;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
+import com.example.loanapp.dto.response.UpdateLoanStatusResponse;
 import com.example.loanapp.dto.response.ViewLoanApplicationsDto;
-import com.example.loanapp.exceptions.LoanNotFound;
+import com.example.loanapp.exceptions.CustomerNotFound;
+import com.example.loanapp.exceptions.InvalidOfficer;
 import com.example.loanapp.utils.Mapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+import static java.rmi.server.LogStream.log;
+
+@Service @Slf4j
 public class LoanAppOfficerService implements LoanOfficerService{
     private final LoanOfficerRepository loanOfficerRepository;
     private final LoanRepository loanRepository;
@@ -41,19 +48,12 @@ public class LoanAppOfficerService implements LoanOfficerService{
     }
 
     @Override
-    public LoanDto reviewLoanApplication(Long loanApplicationId) {
-        Optional<Customer> foundCustomer;
-        Optional<Loan> foundLoan = this.loanRepository.findById(loanApplicationId);
-        LoanDto loanDto = new LoanDto();
-        if (foundLoan.isPresent()){
-            foundCustomer = this.customerRepository.findByLoan(foundLoan.get());
-            if (foundCustomer.isPresent()){
-                Mapper.loanDtoMapper(foundCustomer, foundLoan, loanDto);
-            }
-        } else throw new LoanNotFound("Loan Not Found");
-        return loanDto;
-
+    public ReviewLoanResponse reviewLoanApplication(ReviewLoanRequest request) {
+        Customer foundCustomer = this.customerRepository.findByEmail(request.getCustomerEmail()).orElseThrow(()->new CustomerNotFound("No Customer Found"));
+        return getReviewLoanResponse(foundCustomer);
     }
+
+
 
     @Override
     public List<ViewLoanApplicationsDto> viewLoanApplications() {
@@ -68,26 +68,27 @@ public class LoanAppOfficerService implements LoanOfficerService{
     }
 
     @Override
-    public void updateLoanStatus(UpdateLoanStatusRequest request) {
-        Optional<Customer> foundCustomer = getCustomerByEmail(request.getUserEmail());
-        foundCustomer.ifPresent(customer -> {
-            customer.getLoan().setLoanApplicationStatus(request.getLoanStatus());
-            Optional<Loan> foundLoan = this.loanRepository.findAll().stream().filter(loan -> loan.equals(customer.getLoan())).findAny();
-            foundLoan.ifPresent(this.loanRepository::save);
-            this.customerRepository.save(customer);
-        });
+    public UpdateLoanStatusResponse updateLoanStatus(UpdateLoanStatusRequest request) {
+        Long officerId = request.getOfficerId();
+        Long loanId = request.getLoanId();
+        LoanStatus loanStatus = request.getLoanStatus();
 
-    }
+        Optional<Loan> foundLoan = this.loanRepository.findById(loanId);
+        LoanOfficer foundOfficer = this.loanOfficerRepository
+                .findById(officerId).orElseThrow(()->new InvalidOfficer("No Officer Found"));
 
-    private Optional<Customer> getCustomerByEmail(String email) {
-        return customerRepository.findAll()
-                .stream()
-                .filter(customer -> findCustomerByEmail(customer, email))
-                .findAny();
-    }
+        if (foundLoan.isPresent()){
+            foundLoan.get().setLoanApplicationStatus(loanStatus);
+            foundLoan.get().setLoanOfficer(foundOfficer);
+            this.loanRepository.save(foundLoan.get());
+        }
 
-    private boolean findCustomerByEmail(Customer customer, String email){
-        return customer.getEmail().equals(email);
+        UpdateLoanStatusResponse response = new UpdateLoanStatusResponse();
+        if (foundLoan.isPresent()) response.setMessage("Successful");
+        else response.setMessage("Loan Status Not Set");
+
+        return response;
+
     }
 
 
@@ -101,6 +102,26 @@ public class LoanAppOfficerService implements LoanOfficerService{
         viewLoanApplicationsDto.setTenureInMonths(loan.getTenureInMonths());
 
         return viewLoanApplicationsDto;
+    }
+
+    private static ReviewLoanResponse getReviewLoanResponse(Customer foundCustomer) {
+        ReviewLoanResponse response = new ReviewLoanResponse();
+        response.setCustomerFirstName(foundCustomer.getFirstName());
+        response.setCustomerLastName(foundCustomer.getLastName());
+        response.setCustomerAddress(foundCustomer.getAddress());
+        response.setCustomerPhoneNumber(foundCustomer.getPhoneNumber());
+        response.setCustomerEmail(foundCustomer.getEmail());
+        response.setCustomerSex(foundCustomer.getSex());
+        response.setCustomerAge(foundCustomer.getAge());
+        response.setCustomerEmploymentStatus(foundCustomer.getEmploymentStatus());
+        response.setCustomerEmploymentClassification(foundCustomer.getEmploymentClassification());
+        response.setCustomerNameOfCurrentEmployer(foundCustomer.getNameOfCurrentEmployer());
+        response.setCustomerBasicMonthSalary(foundCustomer.getBasicMonthSalary());
+        response.setCustomerLoanAmount(foundCustomer.getLoan().getLoanAmount());
+        response.setCustomerTenureInMonths(foundCustomer.getLoan().getTenureInMonths());
+        response.setLoanApplicationStatus(foundCustomer.getLoan().getLoanApplicationStatus());
+        response.setLoanOfficer(foundCustomer.getLoan().getLoanOfficer());
+        return response;
     }
 
 

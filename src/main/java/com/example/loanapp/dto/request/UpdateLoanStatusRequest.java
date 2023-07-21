@@ -1,11 +1,16 @@
 package com.example.loanapp.dto.request;
 
 import com.example.loanapp.data.Enums.LoanStatus;
-import lombok.Data;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor
 public class UpdateLoanStatusRequest {
-    private String officerName;
-    private String userEmail;
+    private Long officerId;
+//    private String userEmail;
+    private Long loanId;
     private LoanStatus loanStatus;
 }
