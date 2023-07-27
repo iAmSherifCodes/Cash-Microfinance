@@ -62,7 +62,7 @@ class LoanAppCustomerServiceTest {
 
 
 
-        RegistrationResponse response =  customerService.register(user);
+        MessageResponse response =  customerService.register(user);
 
 
 
@@ -89,7 +89,7 @@ class LoanAppCustomerServiceTest {
 
 
 
-        RegistrationResponse response =  customerService.register(user);
+        MessageResponse response =  customerService.register(user);
 
 
 
@@ -116,7 +116,7 @@ class LoanAppCustomerServiceTest {
 
 
 
-        RegistrationResponse response =  customerService.register(user);
+        MessageResponse response =  customerService.register(user);
 
 
 

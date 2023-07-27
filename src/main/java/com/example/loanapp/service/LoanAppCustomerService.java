@@ -7,6 +7,7 @@ import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.data.repositories.CustomerRepository;
 import com.example.loanapp.dto.request.*;
 import com.example.loanapp.dto.response.*;
+import com.example.loanapp.exceptions.LoanApplicationException;
 import com.example.loanapp.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class LoanAppCustomerService implements CustomerService {
 
 
     @Override
-    public RegistrationResponse register(RegistrationRequest registrationRequest) {
+    public MessageResponse register(RegistrationRequest registrationRequest) {
         Customer newCustomer = Mapper.map(registrationRequest);
         Customer savedCustomer = this.customerRepository.save(newCustomer);
         return Mapper.map(savedCustomer);
@@ -46,6 +47,17 @@ public class LoanAppCustomerService implements CustomerService {
         } else {
             response.setErrorMessage("Customer not found");
         }
+        return response;
+    }
+
+    @Override
+    public MessageResponse updateCustomerDetails(Long id , RegistrationRequest request) {
+        Customer foundCustomer = customerRepository.findById(id)
+                                                   .orElseThrow(() -> new LoanApplicationException("No Customer Found"));
+        Customer newCustomer = Mapper.map(foundCustomer, request);
+        this.customerRepository.save(newCustomer);
+        MessageResponse response = new MessageResponse();
+        response.setMessage("Successful");
         return response;
     }
 
@@ -97,9 +109,6 @@ public class LoanAppCustomerService implements CustomerService {
     @Override
     public LoanAgreementResponse viewLoanAgreement(LoanAgreementRequest loanAgreementRequest) {
         Optional<Customer> foundCustomer = getCustomerByEmail(loanAgreementRequest.getEmail());
-//        if (foundCustomer.isPresent() && foundCustomer.get().getLoan()==null){
-//            return ;}
-//        LocalDateTime dateTime = LocalDateTime.now();
 
         LoanAgreementResponse loanAgreementResponse = new LoanAgreementResponse();
         if(foundCustomer.isPresent() && foundCustomer.get().getLoan()!=null) {
@@ -112,7 +121,6 @@ public class LoanAppCustomerService implements CustomerService {
             loanAgreementResponse.setRepaymentPreference(String.valueOf(foundCustomer.get().getLoan().getRepaymentPreference()));
             loanAgreementResponse.setLoanTenure(String.valueOf(foundCustomer.get().getLoan().getTenureInMonths()));
             loanAgreementResponse.setAmountPerPaymentPeriod(foundCustomer.get().getLoan().getAmountPerPaymentPeriod());
-//            loanAgreementResponse.setPaymentMethod();
 
         }else loanAgreementResponse.setErrorMessage("Not Found");
         return loanAgreementResponse;

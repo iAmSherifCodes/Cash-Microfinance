@@ -14,8 +14,7 @@ import com.example.loanapp.dto.response.ReviewLoanResponse;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
 import com.example.loanapp.dto.response.UpdateLoanStatusResponse;
 import com.example.loanapp.dto.response.ViewLoanApplicationsDto;
-import com.example.loanapp.exceptions.CustomerNotFound;
-import com.example.loanapp.exceptions.InvalidOfficer;
+import com.example.loanapp.exceptions.LoanApplicationException;
 import com.example.loanapp.utils.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import static java.rmi.server.LogStream.log;
 
 @Service @Slf4j
 public class LoanAppOfficerService implements LoanOfficerService{
@@ -49,7 +46,7 @@ public class LoanAppOfficerService implements LoanOfficerService{
 
     @Override
     public ReviewLoanResponse reviewLoanApplication(ReviewLoanRequest request) {
-        Customer foundCustomer = this.customerRepository.findByEmail(request.getCustomerEmail()).orElseThrow(()->new CustomerNotFound("No Customer Found"));
+        Customer foundCustomer = this.customerRepository.findByEmail(request.getCustomerEmail()).orElseThrow(()->new LoanApplicationException("No Customer Found"));
         return getReviewLoanResponse(foundCustomer);
     }
 
@@ -75,7 +72,7 @@ public class LoanAppOfficerService implements LoanOfficerService{
 
         Optional<Loan> foundLoan = this.loanRepository.findById(loanId);
         LoanOfficer foundOfficer = this.loanOfficerRepository
-                .findById(officerId).orElseThrow(()->new InvalidOfficer("No Officer Found"));
+                .findById(officerId).orElseThrow(()->new LoanApplicationException("No Officer Found"));
 
         if (foundLoan.isPresent()){
             foundLoan.get().setLoanApplicationStatus(loanStatus);

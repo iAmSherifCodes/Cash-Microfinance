@@ -7,6 +7,7 @@ import com.example.loanapp.service.CustomerService;
 import com.example.loanapp.service.LoanAppOfficerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegistrationResponse> registerUser(@RequestBody RegistrationRequest registrationRequest){
+    public ResponseEntity<MessageResponse> registerUser(@RequestBody RegistrationRequest registrationRequest){
         return new ResponseEntity<>(customerService.register(registrationRequest), HttpStatus.OK);
     }
 
@@ -32,6 +33,13 @@ public class UserController {
     public ResponseEntity<LoanApplicationResponse> applyForLoanController (@RequestBody LoanApplicationRequest loanApplicationRequest){
         return new ResponseEntity<>(customerService.applyForLoan(loanApplicationRequest), HttpStatus.OK);
     }
+
+//    @PutMapping("update-customer/{id}")
+    @RequestMapping(value = "/update-customer/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody RegistrationRequest request, @PathVariable("id") Long id){
+        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
+    }
+
 
 
     @GetMapping("/login")

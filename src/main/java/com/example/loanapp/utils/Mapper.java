@@ -16,26 +16,32 @@ public class Mapper {
 
     public static Customer map(RegistrationRequest registrationRequest){
         Customer newUser = new Customer();
-        newUser.setAddress(registrationRequest.getAddress());
-        newUser.setEmail(registrationRequest.getEmail());
-        newUser.setFirstName(registrationRequest.getFirstName());
-        newUser.setLastName(registrationRequest.getLastName());
-        newUser.setEmploymentStatus(registrationRequest.getEmploymentStatus());
-        newUser.setPhoneNumber(registrationRequest.getPhoneNumber());
-        newUser.setSex(registrationRequest.getSex());
-        newUser.setAge(registrationRequest.getAge());
-        newUser.setBasicMonthSalary(registrationRequest.getBasicMonthSalary());
-        newUser.setEmploymentClassification(registrationRequest.getEmploymentClassification());
-        newUser.setNameOfCurrentEmployer(registrationRequest.getNameOfCurrentEmployer());
-        newUser.setPassword(registrationRequest.getPassword());
-        return newUser;
+        return mapCustomer(newUser, registrationRequest);
     }
 
-    public static RegistrationResponse map(Customer savedUser){
-        RegistrationResponse response = new RegistrationResponse();
+    public static Customer map(Customer customer ,RegistrationRequest registrationRequest){
+        return mapCustomer(customer, registrationRequest);
+    }
 
+    private static Customer mapCustomer(Customer customer, RegistrationRequest registrationRequest) {
+        customer.setAddress(registrationRequest.getAddress());
+        customer.setEmail(registrationRequest.getEmail());
+        customer.setFirstName(registrationRequest.getFirstName());
+        customer.setLastName(registrationRequest.getLastName());
+        customer.setEmploymentStatus(registrationRequest.getEmploymentStatus());
+        customer.setPhoneNumber(registrationRequest.getPhoneNumber());
+        customer.setSex(registrationRequest.getSex());
+        customer.setAge(registrationRequest.getAge());
+        customer.setBasicMonthSalary(registrationRequest.getBasicMonthSalary());
+        customer.setEmploymentClassification(registrationRequest.getEmploymentClassification());
+        customer.setNameOfCurrentEmployer(registrationRequest.getNameOfCurrentEmployer());
+        customer.setPassword(registrationRequest.getPassword());
+        return customer;
+    }
+
+    public static MessageResponse map(Customer savedUser){
+        MessageResponse response = new MessageResponse();
         if (savedUser!=null)response.setMessage("Registration Successful");
-
         return response;
     }
 

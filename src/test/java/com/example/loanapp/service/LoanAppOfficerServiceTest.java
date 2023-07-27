@@ -8,7 +8,7 @@ import com.example.loanapp.dto.response.ReviewLoanResponse;
 import com.example.loanapp.dto.response.OfficerLoginResponse;
 import com.example.loanapp.dto.response.UpdateLoanStatusResponse;
 
-import com.example.loanapp.exceptions.InvalidOfficer;
+import com.example.loanapp.exceptions.LoanApplicationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +92,7 @@ class LoanAppOfficerServiceTest {
         Long loanId = 4L;
         Long officerId = 4L;
 
-        assertThrows(InvalidOfficer.class, ()->this.loanOfficerService.updateLoanStatus(new UpdateLoanStatusRequest(officerId, loanId, status)));
+        assertThrows(LoanApplicationException.class, ()->this.loanOfficerService.updateLoanStatus(new UpdateLoanStatusRequest(officerId, loanId, status)));
 
     }
 }

@@ -11,8 +11,8 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustomerNotFound.class)
-    public ResponseEntity<ExceptionDto> customerNotFoundExceptionHandler(CustomerNotFound ex, WebRequest wb){
+    @ExceptionHandler(LoanApplicationException.class)
+    public ResponseEntity<ExceptionDto> customerNotFoundExceptionHandler(LoanApplicationException ex, WebRequest wb){
         ExceptionDto exceptionDto = new ExceptionDto();
 
         exceptionDto.setDate(new Date());
