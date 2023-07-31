@@ -61,6 +61,26 @@ public class LoanAppCustomerService implements CustomerService {
         return response;
     }
 
+//    @Override
+//    public MessageResponse updateUser(Long userId, JsonPatch updatePayload) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        Customer foundUser = customerRepository.findById(userId).orElseThrow(()-> new LoanApplicationException("No Customer Found"));
+//        //User Object to node
+//        JsonNode node = mapper.convertValue(foundUser, JsonNode.class);
+//        try {
+//            //apply patch
+//            JsonNode updatedNode = updatePayload.apply(node);
+//            //node to Passenger Object
+//            var updatedUser = mapper.convertValue(updatedNode, User.class);
+//            updatedUser = userRepository.save(updatedUser);
+//            return updatedUser;
+//
+//        } catch (JsonPatchException e) {
+//            log.error(e.getMessage());
+//            throw new RuntimeException();
+//        }
+//    }
+
 
     private static boolean isUserFound(LoginRequest loginRequest, Customer customer) {
         return customer.getPassword().equals(loginRequest.getPassword())

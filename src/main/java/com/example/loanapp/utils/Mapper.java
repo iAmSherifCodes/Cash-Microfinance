@@ -24,7 +24,11 @@ public class Mapper {
     }
 
     private static Customer mapCustomer(Customer customer, RegistrationRequest registrationRequest) {
-        customer.setAddress(registrationRequest.getAddress());
+        String getAddress;
+        if (registrationRequest.getAddress() != null) getAddress = registrationRequest.getAddress();
+
+
+//        customer.setAddress(getAddress.);
         customer.setEmail(registrationRequest.getEmail());
         customer.setFirstName(registrationRequest.getFirstName());
         customer.setLastName(registrationRequest.getLastName());

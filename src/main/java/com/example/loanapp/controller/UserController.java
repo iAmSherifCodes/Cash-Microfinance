@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/user")
@@ -35,11 +36,19 @@ public class UserController {
     }
 
 //    @PutMapping("update-customer/{id}")
-    @RequestMapping(value = "/update-customer/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody RegistrationRequest request, @PathVariable("id") Long id){
-        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
-    }
+//    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody RegistrationRequest request, @PathVariable Long id){
+//        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
+//    }
+//@RequestMapping(value = "/update-customer/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
+//public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody Map<String, Object> request, @PathVariable("id") Long id){
+//    return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
+//}
 
+
+//    @PatchMapping(value = "/update-customer/{id}")
+//    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody Map<String, Object> request, @PathVariable("id") Long id){
+//        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
+//    }
 
 
     @GetMapping("/login")

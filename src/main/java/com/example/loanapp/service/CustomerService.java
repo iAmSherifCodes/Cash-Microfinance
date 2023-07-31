@@ -11,4 +11,5 @@ public interface CustomerService {
     LoanApplicationResponse applyForLoan(LoanApplicationRequest loanApplicationRequest);
     ApplicationStatusResponse viewLoanApplicationStatus(ApplicationStatusRequest applicationStatusRequest);
     LoanAgreementResponse viewLoanAgreement(LoanAgreementRequest loanAgreementRequest);
+//    MessageResponse updateUser(Long userId, JsonPatch updatePayload);
 }
