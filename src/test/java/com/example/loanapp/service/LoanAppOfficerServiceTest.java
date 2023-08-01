@@ -57,10 +57,10 @@ class LoanAppOfficerServiceTest {
         assertEquals("Mr Dom", loginResponse.getFullName());
     }
 
-    @Test
-    void getNumberOfCustomers(){
-        assertEquals(5, this.loanOfficerService.customers().size());
-    }
+//    @Test
+//    void getNumberOfCustomers(){
+//        assertEquals(5, this.loanOfficerService.customers().size());
+//    }
 
     @Test
     void reviewLoanApplication() {

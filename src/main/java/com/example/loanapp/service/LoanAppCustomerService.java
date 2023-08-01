@@ -3,12 +3,17 @@ package com.example.loanapp.service;
 
 import com.example.loanapp.data.model.Customer;
 import com.example.loanapp.data.model.Loan;
-import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.data.repositories.CustomerRepository;
+import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.dto.request.*;
 import com.example.loanapp.dto.response.*;
 import com.example.loanapp.exceptions.LoanApplicationException;
 import com.example.loanapp.utils.Mapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +21,15 @@ import java.util.Optional;
 
 
 @Service
+//@RequiredArgsConstructor
 public class LoanAppCustomerService implements CustomerService {
     private final CustomerRepository customerRepository;
     private final LoanRepository loanRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public LoanAppCustomerService(CustomerRepository customerRepository, LoanRepository loanRepository) {
+    public LoanAppCustomerService(CustomerRepository customerRepository, LoanRepository loanRepository, ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
         this.customerRepository = customerRepository;
         this.loanRepository = loanRepository;
     }
@@ -31,6 +39,7 @@ public class LoanAppCustomerService implements CustomerService {
     public MessageResponse register(RegistrationRequest registrationRequest) {
         Customer newCustomer = Mapper.map(registrationRequest);
         Customer savedCustomer = this.customerRepository.save(newCustomer);
+
         return Mapper.map(savedCustomer);
     }
 
@@ -51,18 +60,35 @@ public class LoanAppCustomerService implements CustomerService {
     }
 
     @Override
-    public MessageResponse updateCustomerDetails(Long id , RegistrationRequest request) {
-        Customer foundCustomer = customerRepository.findById(id)
-                                                   .orElseThrow(() -> new LoanApplicationException("No Customer Found"));
-        Customer newCustomer = Mapper.map(foundCustomer, request);
-        this.customerRepository.save(newCustomer);
-        MessageResponse response = new MessageResponse();
-        response.setMessage("Successful");
-        return response;
+    public MessageResponse updateCustomerDetails(Long id, RegistrationRequest request){
+        Customer foundCustomer = customerRepository.findById(id).orElseThrow(()-> new LoanApplicationException("Could not Update user profile"));
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(request, foundCustomer);
+        this.customerRepository.save(foundCustomer);
+
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setMessage("Update Successful");
+
+        return messageResponse;
     }
+
+
+
+
+//    @Override
+//    public MessageResponse updateCustomerDetails(Long id , RegistrationRequest request) {
+//        Customer foundCustomer = customerRepository.findById(id)
+//                                                   .orElseThrow(() -> new LoanApplicationException("No Customer Found"));
+//        Customer newCustomer = Mapper.map(foundCustomer, request);
+//        this.customerRepository.save(newCustomer);
+//        MessageResponse response = new MessageResponse();
+//        response.setMessage("Successful");
+//        return response;
+//    }
 
 //    @Override
 //    public MessageResponse updateUser(Long userId, JsonPatch updatePayload) {
+//
 //        ObjectMapper mapper = new ObjectMapper();
 //        Customer foundUser = customerRepository.findById(userId).orElseThrow(()-> new LoanApplicationException("No Customer Found"));
 //        //User Object to node
@@ -71,12 +97,14 @@ public class LoanAppCustomerService implements CustomerService {
 //            //apply patch
 //            JsonNode updatedNode = updatePayload.apply(node);
 //            //node to Passenger Object
-//            var updatedUser = mapper.convertValue(updatedNode, User.class);
-//            updatedUser = userRepository.save(updatedUser);
-//            return updatedUser;
+//            var updatedUser = mapper.convertValue(updatedNode, Customer.class);
+//            customerRepository.save(updatedUser);
+//            MessageResponse response = new MessageResponse();
+//            response.setMessage("Update Successful");
+//            return response;
 //
 //        } catch (JsonPatchException e) {
-//            log.error(e.getMessage());
+////            log.error(e.getMessage());
 //            throw new RuntimeException();
 //        }
 //    }

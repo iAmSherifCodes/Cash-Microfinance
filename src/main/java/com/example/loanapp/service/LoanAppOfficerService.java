@@ -10,14 +10,15 @@ import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.dto.request.OfficerLoginRequest;
 import com.example.loanapp.dto.request.ReviewLoanRequest;
 import com.example.loanapp.dto.request.UpdateLoanStatusRequest;
-import com.example.loanapp.dto.response.ReviewLoanResponse;
-import com.example.loanapp.dto.response.OfficerLoginResponse;
-import com.example.loanapp.dto.response.UpdateLoanStatusResponse;
-import com.example.loanapp.dto.response.ViewLoanApplicationsDto;
+import com.example.loanapp.dto.response.*;
 import com.example.loanapp.exceptions.LoanApplicationException;
 import com.example.loanapp.utils.Mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,9 +60,22 @@ public class LoanAppOfficerService implements LoanOfficerService{
 
     }
 
+//    @Query("SELECT r from customerRepository")
+
     @Override
-    public List<Customer> customers() {
-        return this.customerRepository.findAll();
+    public CustomerListResponse customers(Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Customer> customers = this.customerRepository.findAll(pageable);
+        List<Customer> customerList = customers.getContent();
+
+        CustomerListResponse customerListResponse = new CustomerListResponse();
+        customerListResponse.setContents(customerList);
+        customerListResponse.setLastPage(customers.isLast());
+        customerListResponse.setPageNo(customers.getNumber());
+        customerListResponse.setPageSize(customers.getSize());
+        customerListResponse.setTotalPages(customers.getTotalPages());
+
+        return customerListResponse;
     }
 
     @Override

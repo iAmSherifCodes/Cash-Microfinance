@@ -5,6 +5,7 @@ import com.example.loanapp.dto.request.*;
 import com.example.loanapp.dto.response.*;
 import com.example.loanapp.service.CustomerService;
 import com.example.loanapp.service.LoanAppOfficerService;
+import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,10 +36,11 @@ public class UserController {
         return new ResponseEntity<>(customerService.applyForLoan(loanApplicationRequest), HttpStatus.OK);
     }
 
-//    @PutMapping("update-customer/{id}")
-//    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody RegistrationRequest request, @PathVariable Long id){
-//        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
-//    }
+    @PatchMapping("update-customer/{id}")
+    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody RegistrationRequest request, @PathVariable Long id){
+        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
+    }
+
 //@RequestMapping(value = "/update-customer/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
 //public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody Map<String, Object> request, @PathVariable("id") Long id){
 //    return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
@@ -46,8 +48,18 @@ public class UserController {
 
 
 //    @PatchMapping(value = "/update-customer/{id}")
-//    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody Map<String, Object> request, @PathVariable("id") Long id){
-//        return new ResponseEntity<>(customerService.updateCustomerDetails(id, request), HttpStatus.OK);
+//    public ResponseEntity<MessageResponse> updateCustomerDetails(@RequestBody JsonPatch request, @PathVariable("id") Long id){
+//        return new ResponseEntity<>(customerService.updateUser(id, request), HttpStatus.OK);
+//    }
+
+//    @PatchMapping(value = "/update-customer/{userId}", consumes = {"application/json-patch+json"})
+//    public ResponseEntity<?> updateUser(@PathVariable("userId") Long userId, @RequestBody JsonPatch updatePatch){
+//        try {
+//            var response = customerService.updateCustomerDetails(userId, RegistrationRequest req);
+//            return ResponseEntity.status(HttpStatus.OK).body(response);
+//        }catch (Exception exception){
+//            return ResponseEntity.badRequest().body(exception.getMessage());
+//        }
 //    }
 
 

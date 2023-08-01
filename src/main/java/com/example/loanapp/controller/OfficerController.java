@@ -4,10 +4,7 @@ import com.example.loanapp.data.model.Customer;
 import com.example.loanapp.dto.request.OfficerLoginRequest;
 import com.example.loanapp.dto.request.ReviewLoanRequest;
 import com.example.loanapp.dto.request.UpdateLoanStatusRequest;
-import com.example.loanapp.dto.response.ReviewLoanResponse;
-import com.example.loanapp.dto.response.OfficerLoginResponse;
-import com.example.loanapp.dto.response.UpdateLoanStatusResponse;
-import com.example.loanapp.dto.response.ViewLoanApplicationsDto;
+import com.example.loanapp.dto.response.*;
 import com.example.loanapp.service.LoanAppOfficerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,8 +34,11 @@ public class OfficerController {
     }
 
     @GetMapping("/all-customers")
-    public ResponseEntity<List<Customer>> allCustomers(){
-        return new ResponseEntity<>(loanAppOfficerService.customers(), HttpStatus.OK);
+    public ResponseEntity<CustomerListResponse> allCustomers(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) Integer pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
+    ){
+        return new ResponseEntity<>(loanAppOfficerService.customers(pageNo, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/review-loan")

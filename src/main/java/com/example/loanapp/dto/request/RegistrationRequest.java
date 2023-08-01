@@ -4,8 +4,6 @@ package com.example.loanapp.dto.request;
 import com.example.loanapp.data.Enums.EmploymentClassification;
 import com.example.loanapp.data.Enums.EmploymentStatus;
 import com.example.loanapp.data.Enums.Sex;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -34,4 +34,4 @@ build/
 
 
 ####Secret Keys###
-*.properties
+src/main/resources/secret.properties
