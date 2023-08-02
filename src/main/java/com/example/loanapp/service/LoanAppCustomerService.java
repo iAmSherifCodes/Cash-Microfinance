@@ -8,37 +8,63 @@ import com.example.loanapp.data.repositories.LoanRepository;
 import com.example.loanapp.dto.request.*;
 import com.example.loanapp.dto.response.*;
 import com.example.loanapp.exceptions.LoanApplicationException;
+import com.example.loanapp.notification.dto.EmailRequest;
+import com.example.loanapp.notification.dto.MailInfo;
+import com.example.loanapp.notification.mail.MailService;
 import com.example.loanapp.utils.Mapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
 @Service
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class LoanAppCustomerService implements CustomerService {
     private final CustomerRepository customerRepository;
     private final LoanRepository loanRepository;
+    private final MailService mailService;
+    private final TemplateEngine templateEngine;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public LoanAppCustomerService(CustomerRepository customerRepository, LoanRepository loanRepository, ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-        this.customerRepository = customerRepository;
-        this.loanRepository = loanRepository;
-    }
+//    @Autowired
+//    public LoanAppCustomerService(CustomerRepository customerRepository, LoanRepository loanRepository, ModelMapper modelMapper) {
+//        this.modelMapper = modelMapper;
+//        this.customerRepository = customerRepository;
+//        this.loanRepository = loanRepository;
+//    }
 
 
     @Override
     public MessageResponse register(RegistrationRequest registrationRequest) {
         Customer newCustomer = Mapper.map(registrationRequest);
         Customer savedCustomer = this.customerRepository.save(newCustomer);
+
+        Context context = new Context();
+        context.setVariables(
+                Map.of(
+                        "name", savedCustomer.getFirstName()+"  "+savedCustomer.getLastName(),
+                        "verifyUrl", "www.google.com"
+                )
+        );
+        final String content = templateEngine.process("adminMail", context);
+        EmailRequest emailRequest = new EmailRequest();
+        String fullName = savedCustomer.getFirstName() + "  " +savedCustomer.getLastName();
+        emailRequest.setTo(List.of(new MailInfo(fullName, savedCustomer.getEmail())));
+        emailRequest.setSubject("WELCOME TO BANK");
+        emailRequest.setHtmlContent(content);
+
+        String response = mailService.sendMail(emailRequest);
 
         return Mapper.map(savedCustomer);
     }
