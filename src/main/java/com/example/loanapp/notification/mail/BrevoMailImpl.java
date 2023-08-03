@@ -3,7 +3,6 @@ package com.example.loanapp.notification.mail;
 import com.example.loanapp.notification.dto.EmailRequest;
 import com.example.loanapp.notification.dto.MailInfo;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,8 +22,8 @@ public class BrevoMailImpl implements MailService{
         );
 
         return WebClient.builder()
-                .baseUrl("https://api.brevo.com/v3/smtp/email")
-                .defaultHeader("api-key", "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")
+                .baseUrl(mailUrl)
+                .defaultHeader("api-key", apiKey)
                 .build()
                 .post()
                 .bodyValue(emailRequest)

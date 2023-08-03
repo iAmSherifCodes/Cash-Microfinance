@@ -4,11 +4,12 @@ package com.example.loanapp.dto.request;
 import com.example.loanapp.data.Enums.EmploymentClassification;
 import com.example.loanapp.data.Enums.EmploymentStatus;
 import com.example.loanapp.data.Enums.Sex;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
+@Setter @Getter
 public class RegistrationRequest {
     private String firstName;
     private String lastName;
