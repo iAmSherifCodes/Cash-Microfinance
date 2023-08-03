@@ -14,7 +14,6 @@ public class BrevoMailImpl implements MailService{
     @Value("${sendinblue.mail.url}")
     private String mailUrl;
 
-//    @Async
     public String sendMail(EmailRequest emailRequest) {
 
         emailRequest.setSender(
